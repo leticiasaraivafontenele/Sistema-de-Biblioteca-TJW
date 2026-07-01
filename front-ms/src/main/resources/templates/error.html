@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-br">
+<head th:replace="~{fragments/layout :: head('Ops! - Biblioteca')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<main class="container">
+    <div class="text-center py-5">
+        <h1 class="display-4">Ops!</h1>
+        <p class="lead" th:if="${mensagem}" th:text="${mensagem}">Mensagem de erro</p>
+        <p class="lead" th:unless="${mensagem}">
+            Ocorreu um problema ao processar sua solicitação.
+            <span th:if="${status}" th:text="'(Erro ' + ${status} + ')'">(Erro 500)</span>
+        </p>
+        <a th:href="@{/}" class="btn btn-primary mt-3">Voltar para o início</a>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<script th:replace="~{fragments/layout :: scripts}"></script>
+</body>
+</html>

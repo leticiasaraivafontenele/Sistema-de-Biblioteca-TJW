@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-br">
+<head th:replace="~{fragments/layout :: head('Livros - Biblioteca')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<main class="container">
+    <div th:replace="~{fragments/layout :: mensagens}"></div>
+
+    <div class="d-flex justify-content-between align-items-center mt-4 mb-3">
+        <h1 class="h3 mb-0">Livros</h1>
+        <a th:href="@{/livros/novo}" class="btn btn-primary">+ Novo Livro</a>
+    </div>
+
+    <form th:action="@{/livros}" method="get" class="row row-cols-lg-auto g-2 align-items-center mb-3">
+        <div class="col-12">
+            <label for="disponivel" class="col-form-label">Filtrar por disponibilidade:</label>
+        </div>
+        <div class="col-12">
+            <select id="disponivel" name="disponivel" class="form-select" onchange="this.form.submit()">
+                <option value="" th:selected="${disponivel == null}">Todos</option>
+                <option value="true" th:selected="${disponivel == true}">Apenas disponíveis</option>
+                <option value="false" th:selected="${disponivel == false}">Apenas indisponíveis</option>
+            </select>
+        </div>
+    </form>
+
+    <div th:if="${#lists.isEmpty(livros) and erro == null}" class="alert alert-info">
+        Nenhum livro encontrado.
+    </div>
+
+    <div class="table-responsive" th:unless="${#lists.isEmpty(livros)}">
+        <table class="table table-striped table-hover align-middle">
+            <thead class="table-dark">
+            <tr>
+                <th>Título</th>
+                <th>Gênero</th>
+                <th>Ano</th>
+                <th>Disponível</th>
+                <th>Autor</th>
+                <th class="text-end">Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="livro : ${livros}">
+                <td>
+                    <a th:href="@{/livros/{id}(id=${livro.id})}" th:text="${livro.titulo}"
+                       class="text-decoration-none">Título</a>
+                </td>
+                <td th:text="${livro.genero}">Gênero</td>
+                <td th:text="${livro.anoPublicacao}">2000</td>
+                <td>
+                    <span th:if="${livro.disponivel}" class="badge text-bg-success">Sim</span>
+                    <span th:unless="${livro.disponivel}" class="badge text-bg-secondary">Não</span>
+                </td>
+                <td th:text="${livro.nomeAutor}">Autor</td>
+                <td class="text-end">
+                    <a th:href="@{/livros/{id}/editar(id=${livro.id})}"
+                       class="btn btn-sm btn-outline-secondary">Editar</a>
+                    <form th:action="@{/livros/{id}/excluir(id=${livro.id})}" method="post"
+                          class="d-inline" th:data-titulo="${livro.titulo}"
+                          onsubmit="return confirm('Deseja realmente excluir o livro ' + this.dataset.titulo + '?');">
+                        <button type="submit" class="btn btn-sm btn-outline-danger">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<script th:replace="~{fragments/layout :: scripts}"></script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+services:
+
+  # ===================== BANCOS DE DADOS =====================
+  postgres-autores:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: db_autores
+      POSTGRES_USER: biblioteca
+      POSTGRES_PASSWORD: biblioteca
+    volumes:
+      - pgdata-autores:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U biblioteca -d db_autores"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - biblioteca-net
+
+  postgres-livros:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: db_livros
+      POSTGRES_USER: biblioteca
+      POSTGRES_PASSWORD: biblioteca
+    volumes:
+      - pgdata-livros:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U biblioteca -d db_livros"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - biblioteca-net
+
+  # ===================== MICROSSERVICOS =====================
+  autor-ms:
+    build: ./autor-ms
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-autores:5432/db_autores
+      SPRING_DATASOURCE_USERNAME: biblioteca
+      SPRING_DATASOURCE_PASSWORD: biblioteca
+    depends_on:
+      postgres-autores:
+        condition: service_healthy
+    networks:
+      - biblioteca-net
+
+  livro-ms:
+    build: ./livro-ms
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-livros:5432/db_livros
+      SPRING_DATASOURCE_USERNAME: biblioteca
+      SPRING_DATASOURCE_PASSWORD: biblioteca
+    depends_on:
+      postgres-livros:
+        condition: service_healthy
+    networks:
+      - biblioteca-net
+
+  front-ms:
+    build: ./front-ms
+    environment:
+      # O front fala com os microsservicos pelos nomes de servico Docker (HU-21)
+      AUTORES_API_URL: http://autor-ms:8082
+      LIVROS_API_URL: http://livro-ms:8081
+    depends_on:
+      - autor-ms
+      - livro-ms
+    networks:
+      - biblioteca-net
+
+  # ===================== API GATEWAY =====================
+  nginx:
+    image: nginx:1.25-alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - front-ms
+      - livro-ms
+      - autor-ms
+    networks:
+      - biblioteca-net
+
+# Volumes nomeados garantem persistencia dos dados entre reinicializacoes (HU-20)
+volumes:
+  pgdata-autores:
+  pgdata-livros:
+
+networks:
+  biblioteca-net:
+    driver: bridge

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-br">
+<head th:replace="~{fragments/layout :: head('Detalhe do Livro - Biblioteca')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<main class="container">
+    <div th:replace="~{fragments/layout :: mensagens}"></div>
+
+    <div class="card mt-4 shadow-sm">
+        <div class="card-body">
+            <h1 class="h3 card-title" th:text="${livro.titulo}">Título</h1>
+            <p class="text-muted mb-4">por <span th:text="${livro.nomeAutor}">Autor</span></p>
+
+            <dl class="row">
+                <dt class="col-sm-3">Gênero</dt>
+                <dd class="col-sm-9" th:text="${livro.genero}">Gênero</dd>
+
+                <dt class="col-sm-3">Ano de Publicação</dt>
+                <dd class="col-sm-9" th:text="${livro.anoPublicacao}">2000</dd>
+
+                <dt class="col-sm-3">Autor</dt>
+                <dd class="col-sm-9" th:text="${livro.nomeAutor}">Autor</dd>
+
+                <dt class="col-sm-3">Disponibilidade</dt>
+                <dd class="col-sm-9">
+                    <span th:if="${livro.disponivel}" class="badge text-bg-success">Disponível</span>
+                    <span th:unless="${livro.disponivel}" class="badge text-bg-secondary">Indisponível</span>
+                </dd>
+            </dl>
+
+            <div class="mt-4">
+                <a th:href="@{/livros/{id}/editar(id=${livro.id})}" class="btn btn-primary">Editar</a>
+                <a th:href="@{/livros}" class="btn btn-outline-secondary">Voltar para a lista</a>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<script th:replace="~{fragments/layout :: scripts}"></script>
+</body>
+</html>

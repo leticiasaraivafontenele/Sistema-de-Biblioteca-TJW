@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-br">
+<head th:replace="~{fragments/layout :: head('Formulário de Autor - Biblioteca')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<main class="container">
+    <div th:replace="~{fragments/layout :: mensagens}"></div>
+
+    <h1 class="h3 mt-4 mb-3" th:text="${autor.id} != null ? 'Editar Autor' : 'Novo Autor'">Autor</h1>
+
+    <form th:action="${autor.id} != null ? @{/autores/{id}(id=${autor.id})} : @{/autores}"
+          th:object="${autor}" method="post" class="row g-3" novalidate>
+
+        <input type="hidden" th:field="*{id}">
+
+        <div class="col-md-6">
+            <label for="nome" class="form-label">Nome</label>
+            <input type="text" id="nome" th:field="*{nome}"
+                   th:classappend="${#fields.hasErrors('nome')} ? 'is-invalid'"
+                   class="form-control">
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}">erro</div>
+        </div>
+
+        <div class="col-md-6">
+            <label for="nacionalidade" class="form-label">Nacionalidade</label>
+            <input type="text" id="nacionalidade" th:field="*{nacionalidade}"
+                   th:classappend="${#fields.hasErrors('nacionalidade')} ? 'is-invalid'"
+                   class="form-control">
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('nacionalidade')}" th:errors="*{nacionalidade}">erro</div>
+        </div>
+
+        <div class="col-md-4">
+            <label for="anoNascimento" class="form-label">Ano de Nascimento</label>
+            <input type="number" id="anoNascimento" th:field="*{anoNascimento}"
+                   th:classappend="${#fields.hasErrors('anoNascimento')} ? 'is-invalid'"
+                   class="form-control">
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('anoNascimento')}" th:errors="*{anoNascimento}">erro</div>
+        </div>
+
+        <div class="col-12 mt-4">
+            <button type="submit" class="btn btn-primary"
+                    th:text="${autor.id} != null ? 'Atualizar' : 'Salvar'">Salvar</button>
+            <a th:href="@{/autores}" class="btn btn-outline-secondary">Cancelar</a>
+        </div>
+    </form>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<script th:replace="~{fragments/layout :: scripts}"></script>
+</body>
+</html>
