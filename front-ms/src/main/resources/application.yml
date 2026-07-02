@@ -7,8 +7,6 @@ spring:
   thymeleaf:
     cache: false
 
-# URLs dos microsservicos. No Docker Compose sao injetadas via variaveis de
-# ambiente apontando para os nomes de servico (autor-ms / livro-ms).
 autores:
   api:
     url: ${AUTORES_API_URL:http://localhost:8082}

@@ -1,14 +1,4 @@
-/* ================================================================
-   Tema "Cafeteria" — paleta marrom para o Sistema de Biblioteca
-   ----------------------------------------------------------------
-   Carregado DEPOIS do Bootstrap 5.3.3 (ver fragments/layout.html),
-   sobrescrevendo variaveis e componentes para uma vibe de cafeteria.
-   Verde (success) e vermelho (danger) NAO sao tocados de proposito:
-   continuam como destaques padrao do Bootstrap.
-   ================================================================ */
-
 :root {
-    /* Paleta base */
     --cafe-creme:        #F3E8DE;
     --cafe-espresso:     #3E2723;
     --cafe-mocha:        #6F4E37;
@@ -17,7 +7,6 @@
     --cafe-tan:          #D8C3A5;
     --cafe-texto:        #3B2F2F;
 
-    /* Overrides do Bootstrap (afetam utilitarios, links e neutros) */
     --bs-body-bg:          var(--cafe-creme);
     --bs-body-color:       var(--cafe-texto);
     --bs-primary:          var(--cafe-mocha);
@@ -30,12 +19,10 @@
     --bs-border-color:     var(--cafe-tan);
 }
 
-/* Navbar espresso (mantem navbar-dark para o texto claro contrastar) */
 .navbar.bg-dark {
     background-color: var(--cafe-espresso) !important;
 }
 
-/* Botoes primarios -> cafe */
 .btn-primary {
     --bs-btn-bg:                  var(--cafe-mocha);
     --bs-btn-border-color:        var(--cafe-mocha);
@@ -47,7 +34,6 @@
     --bs-btn-disabled-border-color: var(--cafe-mocha);
 }
 
-/* Botoes outline secundarios -> latte */
 .btn-outline-secondary {
     --bs-btn-color:               var(--cafe-mocha);
     --bs-btn-border-color:        var(--cafe-latte);
@@ -58,33 +44,28 @@
     --bs-btn-active-border-color: var(--cafe-mocha-escuro);
 }
 
-/* Cabecalho de tabela escuro -> espresso */
 .table-dark {
     --bs-table-bg:           var(--cafe-espresso);
     --bs-table-border-color: var(--cafe-mocha-escuro);
     --bs-table-color:        var(--cafe-creme);
 }
 
-/* Badge secundario (indisponivel) -> latte */
 .text-bg-secondary {
     background-color: var(--cafe-latte) !important;
     color: #fff !important;
 }
 
-/* Alerta informativo (lista vazia) -> tom areia, sem azul */
 .alert-info {
     --bs-alert-bg:           #EFE3D2;
     --bs-alert-border-color: #DBC7A8;
     --bs-alert-color:        var(--cafe-mocha-escuro);
 }
 
-/* Cards em creme claro */
 .card {
     background-color: #FFFDF9;
     border-color: var(--cafe-tan);
 }
 
-/* Foco/marcacao de formularios em cafe (troca o azul padrao) */
 .form-control:focus,
 .form-select:focus,
 .form-check-input:focus {
@@ -97,7 +78,6 @@
     border-color: var(--cafe-mocha);
 }
 
-/* Footer com borda quente */
 footer.border-top {
     border-color: var(--cafe-tan) !important;
 }

@@ -61,7 +61,6 @@ services:
   front-ms:
     build: ./front-ms
     environment:
-      # O front fala com os microsservicos pelos nomes de servico Docker (HU-21)
       AUTORES_API_URL: http://autor-ms:8082
       LIVROS_API_URL: http://livro-ms:8081
     depends_on:
@@ -84,7 +83,6 @@ services:
     networks:
       - biblioteca-net
 
-# Volumes nomeados garantem persistencia dos dados entre reinicializacoes (HU-20)
 volumes:
   pgdata-autores:
   pgdata-livros:
